@@ -55,3 +55,13 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_db_user)):
     return current_user
+
+@router.get("/db-check")
+def db_check(db: Session = Depends(get_db)):
+    from sqlalchemy import text
+    result = db.execute(text("SELECT DATABASE(), COUNT(*) as user_count FROM users")).fetchone()
+    return {
+        "connected_database": result[0],
+        "total_users": result[1],
+        "message": "This shows which DB your Railway backend is connected to"
+    }
