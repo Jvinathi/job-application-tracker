@@ -73,6 +73,6 @@ def check_and_send_reminders():
 scheduler = BackgroundScheduler()
 
 def start_scheduler():
-    scheduler.add_job(check_and_send_reminders, 'interval', minutes=1)
+    scheduler.add_job(check_and_send_reminders, 'interval', minutes=2, max_instances=1, coalesce=True)
     scheduler.start()
-    print("[Scheduler] Started — checking reminders every 1 minute")
+    print("[Scheduler] Started — checking reminders every 2 minutes")
