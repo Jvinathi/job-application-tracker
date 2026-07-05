@@ -42,7 +42,7 @@ export default function ApplicationCard({ application, onDelete, onEdit }) {
           )}
         </div>
         <p className="text-slate-500 text-xs">
-          Applied {format(new Date(application.applied_on), 'MMM d, yyyy')}
+          Applied {format(new Date(application.applied_on + 'Z'), 'MMM d, yyyy')}
         </p>
       </div>
       <div className="flex gap-2 mt-3">

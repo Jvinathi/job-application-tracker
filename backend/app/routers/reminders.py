@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from typing import List
+from datetime import timezone
 from app.database import get_db
 from app.models.reminder import Reminder
 from app.models.application import Application
@@ -31,7 +32,20 @@ def create_reminder(data: ReminderCreate, current_user: User = Depends(get_curre
     if not app_obj:
         raise HTTPException(status_code=404, detail="Application not found")
 
-    reminder = Reminder(**data.dict())
+    # Convert remind_at to UTC before saving
+    # The frontend sends local time (IST) — we subtract 5h30m to store as UTC
+    remind_at_utc = data.remind_at
+    if data.remind_at.tzinfo is not None:
+        # If timezone info is present, convert to UTC
+        remind_at_utc = data.remind_at.astimezone(timezone.utc).replace(tzinfo=None)
+    # If no tzinfo (naive datetime from frontend), store as-is but fix on scheduler side
+
+    reminder = Reminder(
+        application_id=data.application_id,
+        reminder_type=data.reminder_type,
+        remind_at=remind_at_utc,
+        note=data.note
+    )
     db.add(reminder)
     db.commit()
     db.refresh(reminder)

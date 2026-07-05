@@ -19,9 +19,15 @@ export default function Reminders() {
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
+      // Convert local datetime to UTC before sending to backend
+      // e.g. 1:55 PM IST → 8:25 AM UTC
+      const localDate = new Date(form.remind_at);
+      const utcString = localDate.toISOString().slice(0, 16); // "2026-07-05T08:25"
+
       const res = await axiosClient.post('/reminders/', {
         ...form,
         application_id: parseInt(form.application_id),
+        remind_at: utcString,   // ← send UTC to backend
       });
       setReminders(prev => [...prev, res.data]);
       toast.success('Reminder set!');
@@ -118,7 +124,7 @@ export default function Reminders() {
               <div>
                 <p className="text-white text-sm font-medium">{getAppName(r.application_id)}</p>
                 <p className="text-slate-400 text-xs mt-0.5">
-                  {r.reminder_type.replace('_', ' ')} · {format(new Date(r.remind_at), 'MMM d, yyyy h:mm a')}
+                  {r.reminder_type.replace('_', ' ')} · {format(new Date(r.remind_at + 'Z'), 'MMM d, yyyy h:mm a')}
                 </p>
                 {r.note && <p className="text-slate-500 text-xs mt-1">{r.note}</p>}
               </div>
