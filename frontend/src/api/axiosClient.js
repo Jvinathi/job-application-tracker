@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+console.log('API URL:', BASE_URL); // temporary - remove after confirming
+
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:8000',   // ✅ matches allow_origins exactly
+  baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' }
 });
 
