@@ -1,14 +1,18 @@
 import warnings
-warnings.filterwarnings("ignore", ".*error reading bcrypt version.*")
+warnings.filterwarnings("ignore")
 
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from app.models.user import User
-from app.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+import os
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-change-in-production-32chars-x")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 10080
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
@@ -36,7 +40,6 @@ def get_current_user(token: str, db: Session):
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-
     user = db.query(User).filter(User.id == int(user_id)).first()
     if user is None:
         raise credentials_exception
