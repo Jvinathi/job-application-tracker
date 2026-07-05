@@ -39,5 +39,5 @@ npm run dev
 
 Open http://localhost:5173
 
-## API Docs
-Run backend then visit: http://localhost:8000/docs
+Live App  → https://job-application-tracker-eosin-one.vercel.app
+API Docs  → https://job-application-tracker-production-a9f6.up.railway.app/docs
