@@ -5,11 +5,10 @@ import os
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
-# Fix URL prefix if needed
 if DATABASE_URL.startswith("mysql://"):
     DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
 
-print(f"[DB] Connecting to: {DATABASE_URL[:80]}...")
+print(f"[DB] FULL URL: {DATABASE_URL}")  # print full URL this time
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
