@@ -10,16 +10,21 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Job Tracker API", version="1.0.0")
 
-# Read allowed origins from env variable for flexibility
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://job-application-tracker-eosin-one.vercel.app",  # your Vercel URL
+    FRONTEND_URL,
+]
+
+# Remove duplicates
+origins = list(set(origins))
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        FRONTEND_URL,           # ← your Vercel URL goes here via env var
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
