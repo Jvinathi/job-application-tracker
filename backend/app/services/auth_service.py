@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore", ".*error reading bcrypt version.*")
+
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -19,7 +22,7 @@ def create_access_token(data: dict) -> str:
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def get_current_user(token: str, db: Session) -> User:
+def get_current_user(token: str, db: Session):
     from fastapi import HTTPException, status
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
