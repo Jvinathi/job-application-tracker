@@ -41,4 +41,4 @@ Open http://localhost:5173
 
 Live App  → https://job-application-tracker-black-nu.vercel.app
 
-API Docs  → https://job-application-tracker-production-a9f6.up.railway.app/docs
+API Docs  → https://job-application-tracker-production-6316.up.railway.app
