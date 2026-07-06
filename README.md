@@ -39,5 +39,6 @@ npm run dev
 
 Open http://localhost:5173
 
-Live App  → https://job-application-tracker-eosin-one.vercel.app
+Live App  → https://job-application-tracker-black-nu.vercel.app
+
 API Docs  → https://job-application-tracker-production-a9f6.up.railway.app/docs
